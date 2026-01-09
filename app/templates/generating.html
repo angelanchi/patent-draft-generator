@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}正在生成 - AI專利文件生成器{% endblock %}
+
+{% block content %}
+<div class="container generating-container">
+    <div class="generating-header">
+        <h1>🤖 AI 正在生成您的專利文件</h1>
+        <p class="subtitle">請耐心等待，生成過程約需 2-5 分鐘</p>
+    </div>
+
+    <!-- 進度卡片 -->
+    <div class="progress-card">
+        <div class="progress-info">
+            <h3 id="current-section">準備中...</h3>
+            <p id="progress-description">正在初始化生成流程</p>
+        </div>
+
+        <!-- 進度條 -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+
+        <!-- 章節列表 -->
+        <div class="sections-list">
+            <h4>生成進度：</h4>
+            <div class="section-item pending" id="section-technical_field">
+                <span class="section-icon">⏳</span>
+                <span class="section-name">技術領域</span>
+                <span class="section-status">等待中</span>
+            </div>
+            <div class="section-item pending" id="section-background">
+                <span class="section-icon">⏳</span>
+                <span class="section-name">背景技術</span>
+                <span class="section-status">等待中</span>
+            </div>
+            <div class="section-item pending" id="section-invention_content">
+                <span class="section-icon">⏳</span>
+                <span class="section-name">發明內容</span>
+                <span class="section-status">等待中</span>
+            </div>
+            <div class="section-item pending" id="section-figure_description">
+                <span class="section-icon">⏳</span>
+                <span class="section-name">附圖說明</span>
+                <span class="section-status">等待中</span>
+            </div>
+            <div class="section-item pending" id="section-implementation">
+                <span class="section-icon">⏳</span>
+                <span class="section-name">具體實施方式</span>
+                <span class="section-status">等待中</span>
+            </div>
+            <div class="section-item pending" id="section-attachments">
+                <span class="section-icon">⏳</span>
+                <span class="section-name">其它發明附件</span>
+                <span class="section-status">等待中</span>
+            </div>
+        </div>
+
+        <!-- 估計時間 -->
+        <div class="time-estimate">
+            <p>
+                <strong>估計剩餘時間：</strong>
+                <span id="time-remaining">計算中...</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 提示信息 -->
+    <div class="info-box">
+        <h4>💡 生成過程中...</h4>
+        <ul>
+            <li>AI 正在根據您提供的信息生成專業的專利文件</li>
+            <li>簡單章節使用 GPT-3.5，複雜章節使用 GPT-4 以確保質量</li>
+            <li>請勿關閉或刷新此頁面</li>
+            <li>生成完成後會自動跳轉到預覽頁面</li>
+        </ul>
+    </div>
+
+    <!-- 錯誤信息（默認隱藏） -->
+    <div class="error-box" id="error-box" style="display: none;">
+        <h4>❌ 生成失敗</h4>
+        <p id="error-message"></p>
+        <button class="btn btn-primary" onclick="window.location.href='{{ url_for('main.form') }}'">
+            返回表單
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// 模擬或實際的WebSocket/輪詢來獲取進度
+const patentId = '{{ patent_id }}';
+const API_URL = '/api/generate/patent';
+
+// 章節名稱映射
+const sectionNames = {
+    'technical_field': '技術領域',
+    'background': '背景技術',
+    'invention_content': '發明內容',
+    'figure_description': '附圖說明',
+    'implementation': '具體實施方式',
+    'attachments': '其它發明附件'
+};
+
+// 開始生成
+async function startGeneration() {
+    try {
+        // 從sessionStorage獲取表單數據
+        const formData = JSON.parse(sessionStorage.getItem('patentFormData'));
+
+        if (!formData) {
+            throw new Error('未找到表單數據');
+        }
+
+        // 調用API
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // 生成成功
+            showSuccess(result);
+        } else {
+            // 生成失敗
+            showError(result.error || '未知錯誤');
+        }
+    } catch (error) {
+        console.error('生成錯誤:', error);
+        showError(error.message);
+    }
+}
+
+// 更新進度（模擬）
+function simulateProgress() {
+    const sections = Object.keys(sectionNames);
+    let currentIndex = 0;
+    let progress = 0;
+
+    const interval = setInterval(() => {
+        if (currentIndex < sections.length) {
+            const sectionKey = sections[currentIndex];
+            const sectionName = sectionNames[sectionKey];
+
+            // 更新當前章節
+            document.getElementById('current-section').textContent = `正在生成：${sectionName}`;
+            document.getElementById('progress-description').textContent = `AI正在分析並撰寫${sectionName}章節...`;
+
+            // 更新進度條
+            progress = Math.min(((currentIndex + 1) / sections.length) * 100, 100);
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-percentage').textContent = Math.round(progress) + '%';
+
+            // 更新章節狀態
+            updateSectionStatus(sectionKey, 'generating');
+
+            // 標記之前的章節為完成
+            if (currentIndex > 0) {
+                updateSectionStatus(sections[currentIndex - 1], 'completed');
+            }
+
+            currentIndex++;
+        } else {
+            clearInterval(interval);
+            // 標記最後一個章節為完成
+            if (sections.length > 0) {
+                updateSectionStatus(sections[sections.length - 1], 'completed');
+            }
+        }
+    }, 20000); // 每個章節約20秒（實際會根據API響應調整）
+}
+
+// 更新章節狀態
+function updateSectionStatus(sectionKey, status) {
+    const sectionElement = document.getElementById(`section-${sectionKey}`);
+    if (!sectionElement) return;
+
+    sectionElement.className = `section-item ${status}`;
+
+    const iconElement = sectionElement.querySelector('.section-icon');
+    const statusElement = sectionElement.querySelector('.section-status');
+
+    if (status === 'generating') {
+        iconElement.textContent = '🔄';
+        statusElement.textContent = '生成中...';
+    } else if (status === 'completed') {
+        iconElement.textContent = '✅';
+        statusElement.textContent = '已完成';
+    } else if (status === 'error') {
+        iconElement.textContent = '❌';
+        statusElement.textContent = '失敗';
+    }
+}
+
+// 顯示成功
+function showSuccess(result) {
+    document.getElementById('current-section').textContent = '✅ 生成完成！';
+    document.getElementById('progress-description').textContent = '專利文件已成功生成';
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('progress-percentage').textContent = '100%';
+
+    // 3秒後跳轉
+    setTimeout(() => {
+        // 保存結果到sessionStorage
+        sessionStorage.setItem('generationResult', JSON.stringify(result));
+        window.location.href = '{{ url_for("main.preview") }}';
+    }, 2000);
+}
+
+// 顯示錯誤
+function showError(message) {
+    document.getElementById('error-box').style.display = 'block';
+    document.getElementById('error-message').textContent = message;
+    document.querySelector('.progress-card').style.display = 'none';
+}
+
+// 頁面加載時開始生成
+window.addEventListener('load', () => {
+    simulateProgress();
+    startGeneration();
+});
+</script>
+{% endblock %}

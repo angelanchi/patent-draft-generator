@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}生成專利 - AI專利文件生成器{% endblock %}
+
+{% block content %}
+<div class="container form-container">
+    <div class="form-header">
+        <h1>🚀 生成專利申請文件</h1>
+        <p class="subtitle">填寫以下信息，AI將自動生成專業的專利申請文件</p>
+    </div>
+
+    <!-- 進度指示器 -->
+    <div class="progress-indicator">
+        <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">基本信息</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">技術細節</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">附加信息</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-label">確認生成</div>
+        </div>
+    </div>
+
+    <!-- 表單 -->
+    <form id="patentForm" class="patent-form">
+
+        <!-- 步驟1: 基本信息 -->
+        <div class="form-step active" data-step="1">
+            <h2>📋 基本信息</h2>
+
+            <div class="form-group">
+                <label for="patent_name" class="required">專利名稱</label>
+                <input type="text" id="patent_name" name="patent_name"
+                       placeholder="例如：一種具土壤濕度感測之盆栽自動澆水裝置及方法"
+                       required minlength="5" maxlength="200">
+                <small class="help-text">請輸入清晰、具體的專利名稱（5-200字符）</small>
+            </div>
+
+            <div class="form-group">
+                <label for="inventors" class="required">發明人</label>
+                <input type="text" id="inventors" name="inventors"
+                       placeholder="例如：張三、李四、王五"
+                       required>
+                <small class="help-text">多個發明人用頓號（、）或逗號分隔</small>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="classification">分類號</label>
+                    <input type="text" id="classification" name="classification"
+                           placeholder="例如：A01G">
+                </div>
+
+                <div class="form-group">
+                    <label for="submission_date">提案日期</label>
+                    <input type="date" id="submission_date" name="submission_date">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contact_person">聯絡人</label>
+                    <input type="text" id="contact_person" name="contact_person"
+                           placeholder="例如：張三">
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_number">聯絡電話</label>
+                    <input type="text" id="contact_number" name="contact_number"
+                           placeholder="例如：0000">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contact_email">聯絡郵箱</label>
+                <input type="email" id="contact_email" name="contact_email"
+                       placeholder="例如：example@company.com">
+            </div>
+        </div>
+
+        <!-- 步驟2: 技術細節 -->
+        <div class="form-step" data-step="2">
+            <h2>🔬 技術細節</h2>
+
+            <div class="form-group">
+                <label for="keywords" class="required">技術關鍵字</label>
+                <input type="text" id="keywords" name="keywords"
+                       placeholder="例如：自動澆水, 土壤濕度感測, 盆栽, smart irrigation"
+                       required>
+                <small class="help-text">用逗號分隔多個關鍵字，建議5-10個</small>
+            </div>
+
+            <div class="form-group">
+                <label for="technical_description" class="required">技術描述</label>
+                <textarea id="technical_description" name="technical_description"
+                          rows="6" required minlength="50"
+                          placeholder="詳細描述本發明的技術背景、要解決的問題、技術方案等...&#10;&#10;例如：本發明涉及園藝自動化技術領域，特別是一種依土壤濕度自動決定澆水時機與水量的裝置。傳統定時澆水無法反映植物實際需水量..."></textarea>
+                <small class="help-text">請詳細描述（至少50字），這是AI生成的重要依據</small>
+            </div>
+
+            <div class="form-group">
+                <label for="product_info">產品/元件信息</label>
+                <textarea id="product_info" name="product_info"
+                          rows="4"
+                          placeholder="描述產品或裝置的組成部分、規格參數等...&#10;&#10;例如：測試裝置包括彎曲機構、夾持機構、角度控制系統、力學傳感器..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="working_principle">工作原理</label>
+                <textarea id="working_principle" name="working_principle"
+                          rows="4"
+                          placeholder="描述技術方案的工作原理、運作流程等...&#10;&#10;例如：微控制器定時讀取土壤濕度，低於門檻時啟動水泵..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="innovation_points">創新點</label>
+                <textarea id="innovation_points" name="innovation_points"
+                          rows="4"
+                          placeholder="列出本發明的主要創新點和優勢...&#10;&#10;例如：&#10;1. 自動化程度高：全程自動控制&#10;2. 測試精度高：角度控制精度±0.5度&#10;3. 實時監測：同步監測機械和電氣性能"></textarea>
+            </div>
+        </div>
+
+        <!-- 步驟3: 附加信息 -->
+        <div class="form-step" data-step="3">
+            <h2>📎 附加信息</h2>
+
+            <div class="form-group">
+                <label for="background_references">背景技術參考</label>
+                <textarea id="background_references" name="background_references"
+                          rows="4"
+                          placeholder="描述現有技術的情況、存在的問題等...&#10;&#10;例如：現有盆栽澆水多採定時器控制，只依時間不依土壤狀態..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="problems_to_solve">要解決的問題</label>
+                <textarea id="problems_to_solve" name="problems_to_solve"
+                          rows="4"
+                          placeholder="明確說明本發明要解決哪些技術問題...&#10;&#10;例如：解決定時澆水無法反映植物實際需水量、浪費用水的問題..."></textarea>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="has_diagrams" name="has_diagrams">
+                    <span>包含附圖</span>
+                </label>
+            </div>
+
+            <div class="form-group" id="diagram_group" style="display: none;">
+                <label for="diagram_description">附圖說明</label>
+                <textarea id="diagram_description" name="diagram_description"
+                          rows="3"
+                          placeholder="描述附圖的內容...&#10;&#10;例如：&#10;圖1為本發明測試裝置的整體結構示意圖&#10;圖2為彎曲機構的詳細結構圖&#10;圖3為測試流程圖"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="special_requirements">特殊要求或備註</label>
+                <textarea id="special_requirements" name="special_requirements"
+                          rows="3"
+                          placeholder="任何其他需要說明的內容..."></textarea>
+            </div>
+        </div>
+
+        <!-- 步驟4: 確認生成 -->
+        <div class="form-step" data-step="4">
+            <h2>✅ 確認生成</h2>
+
+            <div class="summary-box">
+                <h3>專利信息預覽</h3>
+                <div id="summary-content">
+                    <!-- JavaScript 動態填充 -->
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>⚠️ 重要提示</h4>
+                <ul>
+                    <li>生成過程約需 <strong>2-5 分鐘</strong>，請耐心等待</li>
+                    <li>將調用 OpenAI API，預估成本約 <strong>$0.10-0.20 USD</strong></li>
+                    <li>生成的專利文件僅供參考，正式申請前請諮詢專利律師</li>
+                    <li>所有數據將在生成後保存在本地服務器</li>
+                </ul>
+            </div>
+
+            <div class="cost-estimate">
+                <h4>💰 成本估算</h4>
+                <div id="cost-info">
+                    <div class="loading-spinner"></div>
+                    <p>正在計算...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表單按鈕 -->
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
+                ← 上一步
+            </button>
+            <button type="button" class="btn btn-primary" id="nextBtn">
+                下一步 →
+            </button>
+            <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                🚀 開始生成
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+{% endblock %}

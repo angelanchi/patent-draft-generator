@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}首頁 - AI專利文件生成器{% endblock %}
+
+{% block content %}
+<div class="container home-container">
+    <div class="hero-section">
+        <h1 class="hero-title">🤖 AI專利文件生成器</h1>
+        <p class="hero-subtitle">使用人工智能自動生成專業的專利申請文件</p>
+
+        <div class="cta-buttons">
+            <a href="{{ url_for('main.form') }}" class="btn btn-primary btn-lg">
+                🚀 立即開始生成
+            </a>
+            <a href="{{ url_for('main.about') }}" class="btn btn-outline btn-lg">
+                📖 了解更多
+            </a>
+        </div>
+    </div>
+
+    <div class="status-banner">
+        <span class="status-badge">✓ 系統運行正常</span>
+    </div>
+
+    <div class="features-section">
+        <h2 class="section-title">系統功能</h2>
+        <div class="features-grid">
+            <div class="feature-box">
+                <div class="feature-icon">🤖</div>
+                <h3>AI 智能生成</h3>
+                <p>使用 OpenAI GPT-4 自動生成專業的專利文件內容</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">📝</div>
+                <h3>標準格式</h3>
+                <p>遵循中國專利申請文件的標準6章節結構</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">📄</div>
+                <h3>Word 輸出</h3>
+                <p>輸出專業格式的 Word 文檔 (.docx)</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">💰</div>
+                <h3>成本優化</h3>
+                <p>智能選擇 GPT-3.5 和 GPT-4 混合使用</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">⚡</div>
+                <h3>快速高效</h3>
+                <p>2-5 分鐘完成完整專利文件生成</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">✅</div>
+                <h3>質量保證</h3>
+                <p>多層驗證確保內容質量和完整性</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="sections-section">
+        <h2 class="section-title">專利文件結構</h2>
+        <div class="sections-list">
+            <div class="section-item">
+                <span class="section-number">1</span>
+                <div class="section-content">
+                    <h4>技術領域</h4>
+                    <p>說明發明所屬技術領域</p>
+                </div>
+            </div>
+            <div class="section-item">
+                <span class="section-number">2</span>
+                <div class="section-content">
+                    <h4>背景技術</h4>
+                    <p>現有技術問題與挑戰</p>
+                </div>
+            </div>
+            <div class="section-item">
+                <span class="section-number">3</span>
+                <div class="section-content">
+                    <h4>發明內容</h4>
+                    <p>核心創新點與技術方案</p>
+                </div>
+            </div>
+            <div class="section-item">
+                <span class="section-number">4</span>
+                <div class="section-content">
+                    <h4>附圖說明</h4>
+                    <p>圖表描述（如有提供）</p>
+                </div>
+            </div>
+            <div class="section-item">
+                <span class="section-number">5</span>
+                <div class="section-content">
+                    <h4>具體實施方式</h4>
+                    <p>詳細實施規格與步驟</p>
+                </div>
+            </div>
+            <div class="section-item">
+                <span class="section-number">6</span>
+                <div class="section-content">
+                    <h4>其它發明附件</h4>
+                    <p>支持資訊與元數據</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section warning">
+        <h3>⚠️ 重要提示</h3>
+        <ul>
+            <li>請確保已在 <code>.env</code> 文件中配置 OpenAI API 密鑰</li>
+            <li>AI 生成的專利文件僅供參考，正式申請前請諮詢專利律師</li>
+            <li>系統會根據章節複雜度自動選擇合適的 AI 模型</li>
+            <li>生成的文件保存在 <code>output/</code> 目錄中</li>
+        </ul>
+    </div>
+
+    <div class="cta-section">
+        <h2>準備好開始了嗎？</h2>
+        <p>立即生成您的專業專利申請文件</p>
+        <a href="{{ url_for('main.form') }}" class="btn btn-primary btn-lg">
+            開始生成 →
+        </a>
+    </div>
+</div>
+{% endblock %}

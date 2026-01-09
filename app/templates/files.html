@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}文件列表 - AI專利文件生成器{% endblock %}
+
+{% block content %}
+<div class="container files-container">
+    <div class="page-header">
+        <h1>📂 已生成的專利文件</h1>
+        <p class="subtitle">管理和下載您生成的專利申請文件</p>
+    </div>
+
+    <!-- 文件列表 -->
+    <div class="files-list" id="files-list">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在載入文件列表...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// 載入文件列表
+async function loadFiles() {
+    try {
+        const response = await fetch('/download/list');
+        const result = await response.json();
+
+        const container = document.getElementById('files-list');
+
+        if (result.files && result.files.length > 0) {
+            container.innerHTML = '<div class="files-grid"></div>';
+            const grid = container.querySelector('.files-grid');
+
+            result.files.forEach(file => {
+                const fileCard = createFileCard(file);
+                grid.appendChild(fileCard);
+            });
+        } else {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>暫無文件</h3>
+                    <p>還沒有生成任何專利文件</p>
+                    <a href="{{ url_for('main.form') }}" class="btn btn-primary">
+                        立即生成
+                    </a>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('載入文件失敗:', error);
+        document.getElementById('files-list').innerHTML = `
+            <div class="error-box">
+                <h4>❌ 載入失敗</h4>
+                <p>${error.message}</p>
+            </div>
+        `;
+    }
+}
+
+function createFileCard(file) {
+    const card = document.createElement('div');
+    card.className = 'file-card';
+
+    const date = new Date(file.modified * 1000);
+    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+
+    card.innerHTML = `
+        <div class="file-icon">📄</div>
+        <div class="file-info">
+            <h3 class="file-name">${file.filename}</h3>
+            <div class="file-meta">
+                <span class="file-size">${sizeInMB} MB</span>
+                <span class="file-date">${date.toLocaleString('zh-CN')}</span>
+            </div>
+        </div>
+        <div class="file-actions">
+            <a href="/download/patent/${file.filename}" class="btn btn-sm btn-primary" download>
+                📥 下載
+            </a>
+        </div>
+    `;
+
+    return card;
+}
+
+// 頁面載入時獲取文件列表
+window.addEventListener('load', loadFiles);
+</script>
+{% endblock %}

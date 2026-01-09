@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI專利文件生成器{% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="{{ url_for('main.index') }}">
+                    <span class="logo">🤖</span>
+                    <span class="brand-text">AI專利文件生成器</span>
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <a href="{{ url_for('main.index') }}" class="nav-link">首頁</a>
+                <a href="{{ url_for('main.form') }}" class="nav-link">生成專利</a>
+                <a href="{{ url_for('main.list_files') }}" class="nav-link">文件列表</a>
+                <a href="{{ url_for('main.about') }}" class="nav-link">關於</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AI專利文件生成器 | 基於 Flask + OpenAI GPT-4 構建</p>
+            <p class="footer-links">
+                <a href="{{ url_for('main.about') }}">關於</a> |
+                <a href="/health">系統狀態</a> |
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}關於 - AI專利文件生成器{% endblock %}
+
+{% block content %}
+<div class="container about-container">
+    <div class="about-header">
+        <h1>🤖 關於 AI專利文件生成器</h1>
+        <p class="version">版本 1.0.0</p>
+    </div>
+
+    <div class="about-section">
+        <h2>📖 系統簡介</h2>
+        <p>
+            AI專利文件生成器是一款基於人工智能技術的專利申請文件自動生成系統。
+            本系統使用 OpenAI GPT-4 模型，能夠根據用戶提供的技術信息自動生成符合
+            中國專利申請標準的專業文件。
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>✨ 主要功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI 智能生成</h3>
+                <p>使用GPT-4自動生成專業專利文件內容</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>標準格式</h3>
+                <p>遵循中國專利申請文件的6章節標準結構</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>成本優化</h3>
+                <p>智能選擇GPT-3.5/GPT-4，平衡質量與成本</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Word 輸出</h3>
+                <p>生成專業格式的Word文檔，可直接編輯</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>質量驗證</h3>
+                <p>多層驗證確保內容質量和完整性</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>快速高效</h3>
+                <p>2-5分鐘完成完整專利文件生成</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2>🏗️ 技術架構</h2>
+        <div class="tech-stack">
+            <div class="tech-item">
+                <strong>後端框架：</strong> Flask 3.0
+            </div>
+            <div class="tech-item">
+                <strong>AI 服務：</strong> OpenAI API (GPT-4 / GPT-3.5-turbo)
+            </div>
+            <div class="tech-item">
+                <strong>文檔生成：</strong> python-docx
+            </div>
+            <div class="tech-item">
+                <strong>數據驗證：</strong> Pydantic
+            </div>
+            <div class="tech-item">
+                <strong>日誌系統：</strong> Loguru
+            </div>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2>📋 專利文件結構</h2>
+        <div class="structure-list">
+            <div class="structure-item">
+                <span class="number">1</span>
+                <div class="structure-content">
+                    <h4>技術領域</h4>
+                    <p>說明發明所屬技術領域</p>
+                </div>
+            </div>
+            <div class="structure-item">
+                <span class="number">2</span>
+                <div class="structure-content">
+                    <h4>背景技術</h4>
+                    <p>現有技術問題與挑戰</p>
+                </div>
+            </div>
+            <div class="structure-item">
+                <span class="number">3</span>
+                <div class="structure-content">
+                    <h4>發明內容</h4>
+                    <p>核心創新點與技術方案</p>
+                </div>
+            </div>
+            <div class="structure-item">
+                <span class="number">4</span>
+                <div class="structure-content">
+                    <h4>附圖說明</h4>
+                    <p>圖表描述（如有提供）</p>
+                </div>
+            </div>
+            <div class="structure-item">
+                <span class="number">5</span>
+                <div class="structure-content">
+                    <h4>具體實施方式</h4>
+                    <p>詳細實施規格與步驟</p>
+                </div>
+            </div>
+            <div class="structure-item">
+                <span class="number">6</span>
+                <div class="structure-content">
+                    <h4>其它發明附件</h4>
+                    <p>支持資訊與元數據</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2>💰 成本說明</h2>
+        <p>系統使用 OpenAI API，會產生以下成本（基於2024年定價）：</p>
+        <ul>
+            <li>單個章節：約 $0.01-0.05 USD</li>
+            <li>完整專利文件：約 $0.10-0.20 USD</li>
+        </ul>
+        <p class="text-muted">實際成本取決於輸入內容的長度和複雜度</p>
+    </div>
+
+    <div class="about-section warning-section">
+        <h2>⚠️ 重要聲明</h2>
+        <div class="disclaimer">
+            <p>
+                本系統生成的專利申請文件僅供參考，不構成專業的法律建議。
+                正式申請專利前，請務必諮詢專業的專利律師或專利代理人。
+            </p>
+            <p>
+                系統使用 AI 技術生成內容，可能存在不準確或不完整的情況。
+                用戶需要對生成的內容進行仔細審查和修改。
+            </p>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2>📞 聯繫方式</h2>
+        <p>如有問題或建議，請通過以下方式聯繫：</p>
+        <ul>
+            <li>Email: support@example.com</li>
+            <li>GitHub: <a href="https://github.com" target="_blank">github.com/yourrepo</a></li>
+        </ul>
+    </div>
+
+    <div class="about-footer">
+        <p>&copy; 2024 AI專利文件生成器 | 基於 Flask + OpenAI GPT-4 構建</p>
+    </div>
+</div>
+{% endblock %}

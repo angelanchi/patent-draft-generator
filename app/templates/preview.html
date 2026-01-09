@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}預覽結果 - AI專利文件生成器{% endblock %}
+
+{% block content %}
+<div class="container preview-container">
+    <div class="success-header">
+        <div class="success-icon">✅</div>
+        <h1>專利文件生成成功！</h1>
+        <p class="subtitle">您的專利申請文件已準備就緒</p>
+    </div>
+
+    <!-- 文件信息卡片 -->
+    <div class="info-card">
+        <h2>📄 文件信息</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">專利名稱：</span>
+                <span class="value" id="patent-name">-</span>
+            </div>
+            <div class="info-item">
+                <span class="label">總字數：</span>
+                <span class="value" id="word-count">-</span>
+            </div>
+            <div class="info-item">
+                <span class="label">生成時間：</span>
+                <span class="value" id="generation-time">-</span>
+            </div>
+            <div class="info-item">
+                <span class="label">生成耗時：</span>
+                <span class="value" id="elapsed-time">-</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 章節預覽 -->
+    <div class="sections-preview">
+        <h2>📋 章節預覽</h2>
+        <div id="sections-container">
+            <!-- JavaScript 動態填充 -->
+        </div>
+    </div>
+
+    <!-- 操作按鈕 -->
+    <div class="action-buttons">
+        <a href="#" id="download-btn" class="btn btn-success btn-lg">
+            📥 下載 Word 文檔
+        </a>
+        <a href="{{ url_for('main.form') }}" class="btn btn-secondary">
+            🔄 生成新專利
+        </a>
+        <a href="{{ url_for('main.list_files') }}" class="btn btn-outline">
+            📂 查看所有文件
+        </a>
+    </div>
+
+    <!-- 提示信息 -->
+    <div class="info-box">
+        <h4>💡 下一步</h4>
+        <ul>
+            <li>下載的 Word 文檔可以在 Microsoft Word 中打開和編輯</li>
+            <li>請仔細審查生成的內容，確保準確性和專業性</li>
+            <li>正式申請前，建議諮詢專業的專利律師或代理人</li>
+            <li>文件已保存在服務器上，可以在"文件列表"中查看</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// 從sessionStorage獲取生成結果
+const result = JSON.parse(sessionStorage.getItem('generationResult') || '{}');
+
+if (result.success && result.patent_info) {
+    // 填充文件信息
+    document.getElementById('patent-name').textContent = result.patent_info.patent_name || '-';
+    document.getElementById('word-count').textContent = (result.patent_info.total_word_count || 0).toLocaleString() + ' 字';
+    document.getElementById('generation-time').textContent = result.patent_info.generated_at || '-';
+    document.getElementById('elapsed-time').textContent = result.generation_time ?
+        result.generation_time.toFixed(2) + ' 秒' : '-';
+
+    // 設置下載鏈接
+    if (result.file_path) {
+        const filename = result.file_path.split('/').pop();
+        document.getElementById('download-btn').href = `/download/patent/${filename}`;
+    }
+
+    // 顯示章節預覽（如果有）
+    displaySections();
+} else {
+    // 如果沒有結果數據，顯示錯誤
+    document.querySelector('.preview-container').innerHTML = `
+        <div class="error-box">
+            <h2>❌ 未找到生成結果</h2>
+            <p>請返回重新生成專利文件</p>
+            <a href="{{ url_for('main.form') }}" class="btn btn-primary">返回表單</a>
+        </div>
+    `;
+}
+
+function displaySections() {
+    const container = document.getElementById('sections-container');
+
+    // 默認章節結構
+    const sections = [
+        { name: '技術領域', key: 'technical_field' },
+        { name: '背景技術', key: 'background' },
+        { name: '發明內容', key: 'invention_content' },
+        { name: '附圖說明', key: 'figure_description' },
+        { name: '具體實施方式', key: 'implementation' },
+        { name: '其它發明附件', key: 'attachments' }
+    ];
+
+    sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section-preview';
+        sectionDiv.innerHTML = `
+            <h3>${section.name}</h3>
+            <div class="section-content">
+                <p class="text-muted">內容已生成，請下載 Word 文檔查看完整內容</p>
+            </div>
+        `;
+        container.appendChild(sectionDiv);
+    });
+}
+</script>
+{% endblock %}
